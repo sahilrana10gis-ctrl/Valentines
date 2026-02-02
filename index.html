@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Gullu ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ff6f91, #ffc75f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+.card {
+  background: white;
+  padding: 28px;
+  border-radius: 28px;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+  max-width: 380px;
+  width: 92%;
+  animation: popIn 0.8s ease;
+}
+
+h1 { color: #ff4d6d; margin-bottom: 8px; }
+p { color: #555; font-size: 1.05em; }
+
+input {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  width: 80%;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.buttons {
+  position: relative;
+  height: 60px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+#yes { background: #ff4d6d; color: white; }
+#no {
+  background: #ddd;
+  color: #555;
+  position: absolute;
+  left: 55%;
+}
+
+.hidden { display: none; }
+
+/* Slider */
+.slider {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  border-radius: 18px;
+  margin-top: 12px;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.caption {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 0.95em;
+  background: rgba(0,0,0,0.4);
+  padding: 6px;
+  animation: fadeUp 1s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  from { transform: translateY(-10vh); }
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Kiss */
+.kiss {
+  position: fixed;
+  font-size: 40px;
+  animation: kissPop 1s ease forwards;
+}
+
+@keyframes kissPop {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* Fullscreen */
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.fullscreen img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_3c3b7bb8a4.mp3">
+</audio>
+
+<div class="card">
+  <h1>Gullu ❤️</h1>
+  <p id="question">Will you be my Valentine?</p>
+
+  <input id="code" placeholder="Enter our secret 💕">
+
+  <div class="buttons">
+    <button id="yes" onclick="startMagic()">YES 💖</button>
+    <button id="no" onmouseover="moveNo()">NO 🙃</button>
+  </div>
+
+  <p id="countdown" class="hidden"></p>
+
+  <div id="final" class="hidden">
+    <p>Gullu: YES 💕<br>🐻‍❄️: Best decision ever 😌</p>
+
+    <div class="slider" id="slider">
+      <img class="slide active" src="photos/1.jpg" data-caption="Our first memory 💕">
+      <img class="slide" src="photos/2.jpg" data-caption="Still my favorite smile 😍">
+      <img class="slide" src="photos/3.jpg" data-caption="Forever us 🫶">
+      <div class="caption" id="caption"></div>
+    </div>
+
+    <button onclick="replay()">Replay memories 🔁</button>
+    <p>— Yours forever, 🐻‍❄️</p>
+  </div>
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let caption = document.getElementById("caption");
+let current = 0;
+let interval;
+
+function startMagic() {
+  if (!document.getElementById("code").value.trim()) {
+    alert("You know the secret 😏");
+    return;
+  }
+
+  navigator.vibrate?.(200);
+  document.getElementById("music").play();
+
+  let count = 3;
+  const cd = document.getElementById("countdown");
+  cd.classList.remove("hidden");
+  cd.innerText = count;
+
+  const timer = setInterval(() => {
+    count--;
+    cd.innerText = count || "💋";
+    if (count === 0) {
+      clearInterval(timer);
+      cd.classList.add("hidden");
+      document.getElementById("final").classList.remove("hidden");
+      startSlider();
+      confetti();
+      kisses();
+    }
+  }, 1000);
+}
+
+function moveNo() {
+  const no = document.getElementById("no");
+  no.style.left = Math.random() * 70 + "%";
+  no.innerText = "Nice try 😌";
+}
+
+function startSlider() {
+  caption.innerText = slides[0].dataset.caption;
+  interval = setInterval(nextSlide, 3000);
+}
+
+function nextSlide() {
+  slides[current].classList.remove("active");
+  current = (current + 1) % slides.length;
+  slides[current].classList.add("active");
+  caption.innerText = slides[current].dataset.caption;
+}
+
+function replay() {
+  clearInterval(interval);
+  current = 0;
+  slides.forEach(s => s.classList.remove("active"));
+  slides[0].classList.add("active");
+  caption.innerText = slides[0].dataset.caption;
+  startSlider();
+}
+
+function confetti() {
+  for (let i = 0; i < 120; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function kisses() {
+  for (let i = 0; i < 10; i++) {
+    const k = document.createElement("div");
+    k.className = "kiss";
+    k.innerText = "💋";
+    k.style.left = 40 + Math.random()*20 + "vw";
+    k.style.top = 40 + Math.random()*20 + "vh";
+    document.body.appendChild(k);
+    setTimeout(() => k.remove(), 1200);
+  }
+}
+
+/* Fullscreen photo */
+slides.forEach(slide => {
+  slide.addEventListener("click", () => {
+    const fs = document.createElement("div");
+    fs.className = "fullscreen";
+    fs.innerHTML = `<img src="${slide.src}">`;
+    fs.onclick = () => fs.remove();
+    document.body.appendChild(fs);
+  });
+});
+</script>
+
+</body>
+</html>
