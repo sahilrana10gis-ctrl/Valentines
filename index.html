@@ -6,6 +6,24 @@
 <title>For Gullu ❤️</title>
 
 <style>
+  #soundGate {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#soundGate button {
+  background: #ff4d6d;
+  color: white;
+  border: none;
+  padding: 16px 28px;
+  border-radius: 30px;
+  font-size: 1.1em;
+}
 body {
   margin: 0;
   height: 100vh;
@@ -154,6 +172,9 @@ button {
 </head>
 
 <body>
+  <div id="soundGate">
+  <button onclick="enableSound()">Tap to enable sound 🎵</button>
+</div>
 
 <audio id="music" preload="auto" loop playsinline>
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_3c3b7bb8a4.mp3" type="audio/mpeg">
@@ -201,20 +222,17 @@ button {
 </div>
 
 <script>
+  function enableSound() {
+  const music = document.getElementById("music");
+  music.volume = 0.6;
+  music.play().catch(() => {});
+  document.getElementById("soundGate").style.display = "none";
+}
 let current = 0;
 let interval;
 
 function startMagic() {
-  const music = document.getElementById("music");
-
-  music.currentTime = 0;
-  music.volume = 0.6;
-
-  const playPromise = music.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(() => {});
-  }
-
+  
   navigator.vibrate?.(200);
 
 
