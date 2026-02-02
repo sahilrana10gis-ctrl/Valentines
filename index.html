@@ -201,8 +201,6 @@ button {
 </div>
 
 <script>
-let slides = document.querySelectorAll(".slide");
-let caption = document.getElementById("caption");
 let current = 0;
 let interval;
 
@@ -236,22 +234,27 @@ music.play().catch(() => {});
 
 function moveNo() {
   const no = document.getElementById("no");
-  no.style.left = Math.random() * 70 + "%";
+  const x = (Math.random() * 120) - 60;
+  const y = (Math.random() * 40) - 20;
+  no.style.transform = `translate(${x}px, ${y}px)`;
   no.innerText = "Nice try 😌";
 }
-
 function startSlider() {
   caption.innerText = slides[0].dataset.caption;
   interval = setInterval(nextSlide, 3000);
 }
 
-function nextSlide() {
-  slides[current].classList.remove("active");
-  current = (current + 1) % slides.length;
-  slides[current].classList.add("active");
-  caption.innerText = slides[current].dataset.caption;
-}
+function startSlider() {
+  slides = document.querySelectorAll(".slide");
+  caption = document.getElementById("caption");
 
+  current = 0;
+  slides.forEach(s => s.classList.remove("active"));
+  slides[0].classList.add("active");
+  caption.innerText = slides[0].dataset.caption;
+
+  interval = setInterval(nextSlide, 3000);
+}
 function replay() {
   clearInterval(interval);
   current = 0;
