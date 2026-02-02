@@ -177,7 +177,7 @@ button {
 </div>
 
 <audio id="music" preload="auto" loop playsinline>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_3c3b7bb8a4.mp3" type="audio/mpeg">
+  <source src="love.mp3" type="audio/mpeg">
 </audio>
 <div class="card">
   <h1>Gullu ❤️</h1>
@@ -225,7 +225,9 @@ button {
   function enableSound() {
   const music = document.getElementById("music");
   music.volume = 0.6;
-  music.play().catch(() => {});
+  music.play().catch(err => {
+    alert("Sound blocked. Please turn off silent mode 🔕");
+  });
   document.getElementById("soundGate").style.display = "none";
 }
 let current = 0;
