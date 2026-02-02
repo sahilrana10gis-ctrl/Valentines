@@ -155,7 +155,7 @@ button {
 
 <body>
 
-<audio id="music" loop playsinline>
+<audio id="music" preload="auto" loop playsinline>
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_3c3b7bb8a4.mp3" type="audio/mpeg">
 </audio>
 <div class="card">
@@ -205,10 +205,15 @@ let current = 0;
 let interval;
 
 function startMagic() {
-const music = document.getElementById("music");
-music.volume = 0.6;
-music.play().catch(() => {});
- 
+  const music = document.getElementById("music");
+
+  music.currentTime = 0;
+  music.volume = 0.6;
+
+  const playPromise = music.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {});
+  }
 
   navigator.vibrate?.(200);
 
@@ -253,7 +258,14 @@ function startSlider() {
   slides[0].classList.add("active");
   caption.innerText = slides[0].dataset.caption;
 
-  interval = setInterval(nextSlide, 3000);
+  if (interval) clearInterval(interval);
+
+  interval = setInterval(() => {
+    slides[current].classList.remove("active");
+    current = (current + 1) % slides.length;
+    slides[current].classList.add("active");
+    caption.innerText = slides[current].dataset.caption;
+  }, 3000);
 }
 function replay() {
   clearInterval(interval);
