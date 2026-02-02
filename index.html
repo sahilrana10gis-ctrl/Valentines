@@ -172,11 +172,8 @@ button {
 </head>
 
 <body>
-  <div id="soundGate">
-  <button onclick="enableSound()">Tap to enable sound 🎵</button>
-</div>
 
-<audio id="music" preload="auto" loop playsinline>
+<audio id="music" loop>
   <source src="love.mp3" type="audio/mpeg">
 </audio>
 <div class="card">
@@ -222,21 +219,15 @@ button {
 </div>
 
 <script>
-  function enableSound() {
-  const music = document.getElementById("music");
-  music.volume = 0.6;
-  music.play().catch(err => {
-    alert("Sound blocked. Please turn off silent mode 🔕");
-  });
-  document.getElementById("soundGate").style.display = "none";
-}
 let current = 0;
 let interval;
 
 function startMagic() {
-  
-  navigator.vibrate?.(200);
+  const music = document.getElementById("music");
+  music.volume = 0.7;
+  music.play();
 
+  navigator.vibrate?.(200);
 
   let count = 3;
   const cd = document.getElementById("countdown");
