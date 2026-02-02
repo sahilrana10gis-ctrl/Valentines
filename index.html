@@ -162,7 +162,6 @@ button {
   <h1>Gullu ❤️</h1>
   <p id="question">Will you be my Valentine?</p>
 
-  <input id="code" placeholder="Who am I to you? 💕">
 
   <div class="buttons">
     <button id="yes" onclick="startMagic()">YES 💖</button>
@@ -211,12 +210,7 @@ function startMagic() {
 const music = document.getElementById("music");
 music.volume = 0.6;
 music.play().catch(() => {});
-  const secret = document.getElementById("code").value.trim().toLowerCase();
-
-if (secret !== "Husband") {
-  alert("Hmm… that’s not our secret 😌");
-  return;
-}
+ 
 
   navigator.vibrate?.(200);
 
